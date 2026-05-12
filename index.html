@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1st Hartshorne Scout Group</title>
+<meta name="description" content="1st Hartshorne Scout Group — Beavers, Cubs and Scouts in Hartshorne. Find out about our sections, meeting times, and how to join.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800;6..12,900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --purple:      #7413dc;
+  --purple-dark: #5a0fb0;
+  --teal:        #088486;
+  --orange:      #ff912a;
+  --green:       #25b755;
+  --navy:        #003982;
+  --white:       #ffffff;
+  --bg:          #f7f5fb;
+  --text:        #1c1c2e;
+  --muted:       #5f5f7a;
+  --border:      #e2ddf0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--text);
+  background: var(--white);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── HEADER ── */
+header {
+  background: var(--purple);
+  padding: 0 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 68px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 4px;
+}
+
+nav a {
+  color: rgba(255,255,255,0.88);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 7px 13px;
+  border-radius: 7px;
+  transition: background 0.15s, color 0.15s;
+}
+
+nav a:hover {
+  background: rgba(255,255,255,0.15);
+  color: white;
+}
+
+/* ── HERO ── */
+.hero {
+  background: var(--purple);
+  padding: 4.5rem 2rem 5rem;
+  text-align: center;
+  color: white;
+}
+
+.hero h1 {
+  font-size: clamp(2.2rem, 5.5vw, 3.6rem);
+  font-weight: 900;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  font-size: 1.15rem;
+  color: rgba(255,255,255,0.82);
+  max-width: 540px;
+  margin: 0 auto 2.25rem;
+}
+
+.hero-btns {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-block;
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  padding: 12px 24px;
+  border-radius: 9px;
+  text-decoration: none;
+  transition: opacity 0.15s, transform 0.1s;
+  border: none;
+  cursor: pointer;
+}
+
+.btn:hover { opacity: 0.88; transform: translateY(-1px); }
+
+.btn-orange  { background: var(--orange); color: white; }
+.btn-outline { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.55); }
+.btn-outline:hover { border-color: white; }
+.btn-purple  { background: var(--purple); color: white; }
+.btn-full    { width: 100%; text-align: center; display: block; }
+
+/* wave separator */
+.wave { display: block; margin-bottom: -2px; }
+
+/* ── LAYOUT ── */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+section { padding: 4rem 0; }
+section.alt { background: var(--bg); }
+
+.section-heading {
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--purple);
+  margin-bottom: 0.5rem;
+}
+
+h2 {
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 1rem;
+}
+
+h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.4rem; }
+p { color: var(--muted); }
+p + p { margin-top: 0.75rem; }
+
+/* ── SECTIONS ── */
+.sections-intro {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.age-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 0.5rem;
+}
+
+.age-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 16px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 800;
+  color: white;
+}
+
+.age-list li .ages {
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0.85;
+  margin-left: auto;
+}
+
+.li-beavers { background: var(--teal); }
+.li-cubs    { background: #a07010; }
+.li-scouts  { background: var(--purple); }
+
+/* ── MEETINGS ── */
+.meetings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 2rem;
+}
+
+.meeting-row {
+  display: flex;
+  align-items: stretch;
+  background: white;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.meeting-colour {
+  width: 7px;
+  flex-shrink: 0;
+}
+
+.mc-beavers { background: var(--teal); }
+.mc-cubs    { background: #a07010; }
+.mc-scouts  { background: var(--purple); }
+
+.meeting-body {
+  padding: 1rem 1.25rem;
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1.2fr 1.2fr 1fr;
+  gap: 0.15rem 1rem;
+  align-items: center;
+}
+
+.meeting-name {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.meeting-ages {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.meeting-day {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.meeting-time {
+  font-size: 14px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.meeting-place {
+  font-size: 14px;
+  color: var(--muted);
+  font-weight: 600;
+  text-align: right;
+  grid-row: 1 / 3;
+  align-self: center;
+}
+
+/* ── JOIN ── */
+.join-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.join-info ul {
+  list-style: none;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.join-info ul li {
+  display: flex;
+  gap: 10px;
+  font-size: 15px;
+  color: var(--muted);
+  align-items: flex-start;
+}
+
+.join-info ul li::before {
+  content: '✓';
+  color: var(--green);
+  font-weight: 900;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.volunteer-box {
+  margin-top: 2rem;
+  background: var(--purple);
+  border-radius: 14px;
+  padding: 1.5rem;
+}
+
+.volunteer-box h3 { color: white; font-size: 1rem; margin-bottom: 0.35rem; }
+.volunteer-box p  { color: rgba(255,255,255,0.8); font-size: 14px; }
+
+form { display: flex; flex-direction: column; gap: 0.85rem; }
+
+label {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 5px;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 10px 13px;
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 15px;
+  color: var(--text);
+  background: white;
+  border: 1.5px solid var(--border);
+  border-radius: 9px;
+  outline: none;
+  transition: border-color 0.15s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input:focus, select:focus, textarea:focus { border-color: var(--purple); }
+textarea { resize: vertical; min-height: 100px; }
+
+.form-note {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: -0.3rem;
+}
+
+/* ── CONTACT ── */
+.contact-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.25rem;
+  margin-top: 2rem;
+}
+
+.contact-tile {
+  background: white;
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+}
+
+.contact-tile-label {
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--purple);
+  margin-bottom: 6px;
+}
+
+.contact-tile-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.contact-tile-value a { color: var(--purple); text-decoration: none; }
+.contact-tile-value a:hover { text-decoration: underline; }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--purple);
+  color: rgba(255,255,255,0.75);
+  padding: 2.5rem 2rem;
+  text-align: center;
+  font-size: 14px;
+}
+
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.footer-name { font-size: 15px; font-weight: 800; color: white; }
+footer a { color: rgba(255,255,255,0.75); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 700px) {
+  .sections-intro,
+  .join-grid { grid-template-columns: 1fr; gap: 2rem; }
+
+  .meeting-body { grid-template-columns: 1fr 1fr; }
+
+  .meeting-place {
+    grid-column: 1 / 3;
+    grid-row: 3;
+    text-align: left;
+    font-size: 13px;
+  }
+
+  nav ul { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <a href="#" class="logo">
+      <img src="logo-white.png" alt="1st Hartshorne Scout Group" style="height: 44px; width: auto;">
+    </a>
+    <nav>
+      <ul>
+        <li><a href="#sections">Our sections</a></li>
+        <li><a href="#meetings">Meeting times</a></li>
+        <li><a href="#join">Join us</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>1st Hartshorne<br>Scout Group</h1>
+  <p>Register your interest in joining, find out when we meet, and learn more about what we do.</p>
+  <div class="hero-btns">
+    <a href="#join" class="btn btn-orange">Join one of our sections</a>
+    <a href="#meetings" class="btn btn-outline">When do we meet?</a>
+  </div>
+</div>
+<svg class="wave" viewBox="0 0 1440 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0,0 L1440,0 L1440,40 C1080,10 360,10 0,40 Z" fill="#7413dc"/>
+  <path d="M0,40 C360,10 1080,10 1440,40 L1440,41 L0,41 Z" fill="white"/>
+</svg>
+
+<!-- SECTIONS -->
+<section id="sections">
+  <div class="container">
+    <div class="sections-intro">
+      <div>
+        <p class="section-heading">Our sections</p>
+        <h2>All young people welcome</h2>
+        <p>At 1st Hartshorne we run sections for young people from age 6 to 14. Whatever age your child is, there is a place for them here.</p>
+        <p>We believe every young person deserves the chance to discover their potential — to make friends, try new things, and have a brilliant time doing it. Our volunteers are fully trained and DBS checked.</p>
+      </div>
+      <ul class="age-list">
+        <li class="li-beavers">🦫 Beavers <span class="ages">6–8 years</span></li>
+        <li class="li-cubs">🐻 Cubs <span class="ages">8–10½ years</span></li>
+        <li class="li-scouts">⚜️ Scouts <span class="ages">10½–14 years</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- MEETINGS -->
+<section class="alt" id="meetings">
+  <div class="container">
+    <p class="section-heading">Meeting times</p>
+    <h2>When and where we meet</h2>
+    <p>All meetings run weekly during term time. Please get in touch before your first visit so we can expect you.</p>
+
+    <div class="meetings-list">
+      <div class="meeting-row">
+        <div class="meeting-colour mc-beavers"></div>
+        <div class="meeting-body">
+          <span class="meeting-name">🦫 Beavers</span>
+          <span class="meeting-ages">Ages 6–8</span>
+          <span class="meeting-day">Monday evenings</span>
+          <span class="meeting-time">5:45pm – 7:00pm</span>
+          <span class="meeting-place">St Peter's Church Hall</span>
+        </div>
+      </div>
+      <div class="meeting-row">
+        <div class="meeting-colour mc-cubs"></div>
+        <div class="meeting-body">
+          <span class="meeting-name">🐻 Cubs</span>
+          <span class="meeting-ages">Ages 8–10½</span>
+          <span class="meeting-day">Friday evenings</span>
+          <span class="meeting-time">7:00pm – 8:30pm</span>
+          <span class="meeting-place">St Peter's Church Hall</span>
+        </div>
+      </div>
+      <div class="meeting-row">
+        <div class="meeting-colour mc-scouts"></div>
+        <div class="meeting-body">
+          <span class="meeting-name">⚜️ Scouts</span>
+          <span class="meeting-ages">Ages 10½–14</span>
+          <span class="meeting-day">Tuesday evenings</span>
+          <span class="meeting-time">7:00pm – 9:00pm</span>
+          <span class="meeting-place">St Peter's Church Hall</span>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top: 1.25rem; font-size: 13px; color: var(--muted);">All meetings run during term time only.</p>
+  </div>
+</section>
+
+<!-- JOIN -->
+<section id="join">
+  <div class="container">
+    <div class="join-grid">
+      <div class="join-info">
+        <p class="section-heading">Join us</p>
+        <h2>Interested in joining?</h2>
+        <p>Complete the form to register your interest and we will get back to you to arrange your first visit. We aim to reply within a few days.</p>
+        <ul>
+          <li>Open to all genders, backgrounds and abilities</li>
+          <li>Qualified, DBS-checked adult volunteers</li>
+          <li>Meetings run weekly during term time</li>
+          <li>Uniform and kit guidance provided on joining</li>
+        </ul>
+        <div class="volunteer-box">
+          <h3>Thinking about volunteering?</h3>
+          <p>We're always looking for adults to help lead our sections. No Scouting experience is needed — just enthusiasm. Get in touch and we can tell you more.</p>
+        </div>
+      </div>
+
+      <form action="https://formspree.io/f/mvzlllzg" method="POST">
+        <div>
+          <label for="name">Parent / guardian name</label>
+          <input type="text" id="name" name="name" placeholder="Your full name" required>
+        </div>
+        <div>
+          <label for="email">Email address</label>
+          <input type="email" id="email" name="email" placeholder="your@email.com" required>
+        </div>
+        <div>
+          <label for="phone">Phone number</label>
+          <input type="tel" id="phone" name="phone" placeholder="07700 000000">
+        </div>
+        <div>
+          <label for="child-name">Child's name</label>
+          <input type="text" id="child-name" name="child_name" placeholder="Your child's full name" required>
+        </div>
+        <div>
+          <label for="child-dob">Child's date of birth</label>
+          <input type="date" id="child-dob" name="child_dob">
+        </div>
+        <div>
+          <label for="section">Section interested in</label>
+          <select id="section" name="section" required>
+            <option value="">Please select...</option>
+            <option value="beavers">Beavers (age 6–8)</option>
+            <option value="cubs">Cubs (age 8–10½)</option>
+            <option value="scouts">Scouts (age 10½–14)</option>
+            <option value="unsure">Not sure — please advise</option>
+            <option value="volunteer">I'm interested in volunteering</option>
+          </select>
+        </div>
+        <div>
+          <label for="osm">Have you already submitted a request via scouts.org.uk?</label>
+          <select id="osm" name="already_applied">
+            <option value="">Please select...</option>
+            <option value="yes">Yes — I have already used the Group Finder</option>
+            <option value="no">No — this is my first enquiry</option>
+          </select>
+          <p class="form-note">If you have already submitted via the Scout Association website, you don't need to fill this form in as well.</p>
+        </div>
+        <div>
+          <label for="message">Anything else you'd like us to know?</label>
+          <textarea id="message" name="message" placeholder="Any questions or additional information about your child..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-purple btn-full" style="font-size: 16px; padding: 13px 24px;">Send enquiry →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="alt" id="contact">
+  <div class="container">
+    <p class="section-heading">Contact</p>
+    <h2>Get in touch</h2>
+    <p>You can also reach us directly using the details below.</p>
+    <div class="contact-tiles">
+      <div class="contact-tile">
+        <div class="contact-tile-label">Email</div>
+        <div class="contact-tile-value">
+          <a href="mailto:hello@1sthartshornescouts.org">hello@1sthartshornescouts.org</a>
+        </div>
+      </div>
+      <div class="contact-tile">
+        <div class="contact-tile-label">Meeting venue</div>
+        <div class="contact-tile-value">St Peter's Church Hall<br>Manchester Lane<br>Hartshorne, Derbyshire<br>DE11 7BE</div>
+      </div>
+      <div class="contact-tile">
+        <div class="contact-tile-label">Scout Association</div>
+        <div class="contact-tile-value">
+          <a href="https://www.scouts.org.uk" target="_blank" rel="noopener">scouts.org.uk</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <p class="footer-name">1st Hartshorne Scout Group</p>
+    <p style="color: rgba(255,255,255,0.75);">Registered charity · Part of The Scout Association · #SkillsForLife</p>
+    <p style="color: rgba(255,255,255,0.75);">© <span id="year"></span> 1st Hartshorne Scout Group</p>
+    <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+  </div>
+</footer>
+
+</body>
+</html>
