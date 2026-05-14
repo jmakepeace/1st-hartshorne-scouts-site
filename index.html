@@ -14,7 +14,6 @@
 :root {
   --purple:      #7413dc;
   --purple-dark: #5a0fb0;
-  --teal:        #088486;
   --orange:      #ff912a;
   --green:       #25b755;
   --navy:        #003982;
@@ -23,6 +22,11 @@
   --text:        #1c1c2e;
   --muted:       #5f5f7a;
   --border:      #e2ddf0;
+
+  /* Official Scouts UK section colours */
+  --beavers:     #006ddf;
+  --cubs:        #23a950;
+  --scouts:      #004851;
 }
 
 html { scroll-behavior: smooth; }
@@ -52,6 +56,7 @@ header {
   align-items: center;
   justify-content: space-between;
   height: 68px;
+  position: relative;
 }
 
 .logo {
@@ -60,8 +65,6 @@ header {
   gap: 12px;
   text-decoration: none;
 }
-
-
 
 nav ul {
   list-style: none;
@@ -84,16 +87,57 @@ nav a:hover {
   color: white;
 }
 
+.nav-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  width: 44px;
+  height: 44px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 22px;
+  height: 2.5px;
+  background: white;
+  border-radius: 2px;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.nav-toggle[aria-expanded="true"] span:nth-child(1) {
+  transform: translateY(7.5px) rotate(45deg);
+}
+.nav-toggle[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+}
+.nav-toggle[aria-expanded="true"] span:nth-child(3) {
+  transform: translateY(-7.5px) rotate(-45deg);
+}
+
 /* ── HERO ── */
 .hero {
   background: var(--purple);
-  padding: 4.5rem 2rem 5rem;
-  text-align: center;
+  padding: 4rem 2rem 4.5rem;
   color: white;
 }
 
+.hero-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
 .hero h1 {
-  font-size: clamp(2.2rem, 5.5vw, 3.6rem);
+  font-size: clamp(2rem, 5vw, 3.4rem);
   font-weight: 900;
   letter-spacing: -0.025em;
   line-height: 1.1;
@@ -101,17 +145,31 @@ nav a:hover {
 }
 
 .hero p {
-  font-size: 1.15rem;
-  color: rgba(255,255,255,0.82);
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.85);
   max-width: 540px;
-  margin: 0 auto 2.25rem;
+  margin: 0 0 2rem;
 }
 
 .hero-btns {
   display: flex;
   gap: 12px;
-  justify-content: center;
   flex-wrap: wrap;
+}
+
+.hero-photo {
+  border-radius: 18px;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.28);
+  transform: rotate(-1.5deg);
+}
+
+.hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .btn {
@@ -181,31 +239,66 @@ p + p { margin-top: 0.75rem; }
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  margin-top: 0.5rem;
+  gap: 10px;
+  margin-top: 0.75rem;
 }
 
 .age-list li {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 11px 16px;
-  border-radius: 10px;
-  font-size: 15px;
-  font-weight: 800;
-  color: white;
+  gap: 16px;
+  padding: 14px 18px;
+  background: white;
+  border: 1.5px solid var(--border);
+  border-left-width: 6px;
+  border-radius: 12px;
+}
+
+.age-list li .wordmark {
+  height: 30px;
+  width: auto;
+  display: block;
 }
 
 .age-list li .ages {
-  font-size: 13px;
-  font-weight: 600;
-  opacity: 0.85;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--muted);
   margin-left: auto;
 }
 
-.li-beavers { background: var(--teal); }
-.li-cubs    { background: #a07010; }
-.li-scouts  { background: var(--purple); }
+.li-beavers { border-left-color: var(--beavers); }
+.li-cubs    { border-left-color: var(--cubs); }
+.li-scouts  { border-left-color: var(--scouts); }
+
+.meeting-name .wordmark {
+  height: 26px;
+  width: auto;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+/* ── WHAT WE DO ── */
+.what-we-do {
+  display: grid;
+  grid-template-columns: 1fr 1.05fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.what-we-do-photo {
+  border-radius: 18px;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+}
+
+.what-we-do-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 
 /* ── MEETINGS ── */
 .meetings-list {
@@ -229,9 +322,9 @@ p + p { margin-top: 0.75rem; }
   flex-shrink: 0;
 }
 
-.mc-beavers { background: var(--teal); }
-.mc-cubs    { background: #a07010; }
-.mc-scouts  { background: var(--purple); }
+.mc-beavers { background: var(--beavers); }
+.mc-cubs    { background: var(--cubs); }
+.mc-scouts  { background: var(--scouts); }
 
 .meeting-body {
   padding: 1rem 1.25rem;
@@ -406,9 +499,19 @@ footer {
 .footer-name { font-size: 15px; font-weight: 800; color: white; }
 footer a { color: rgba(255,255,255,0.75); }
 
+/* ── HONEYPOT ── */
+.hp-field {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 /* ── RESPONSIVE ── */
 @media (max-width: 700px) {
   .sections-intro,
+  .what-we-do,
   .join-grid { grid-template-columns: 1fr; gap: 2rem; }
 
   .meeting-body { grid-template-columns: 1fr 1fr; }
@@ -420,7 +523,49 @@ footer a { color: rgba(255,255,255,0.75); }
     font-size: 13px;
   }
 
-  nav ul { display: none; }
+  .nav-toggle { display: flex; }
+
+  .hero-inner {
+    grid-template-columns: 1fr;
+    gap: 2.25rem;
+    text-align: center;
+  }
+  .hero p { margin-left: auto; margin-right: auto; }
+  .hero-btns { justify-content: center; }
+  .hero-photo {
+    order: -1;
+    max-width: 360px;
+    margin: 0 auto;
+    aspect-ratio: 4 / 3;
+  }
+
+  nav {
+    position: absolute;
+    top: 100%;
+    left: -2rem;
+    right: -2rem;
+    background: var(--purple);
+    border-top: 1px solid rgba(255,255,255,0.15);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s ease;
+  }
+
+  nav[data-open="true"] {
+    max-height: 320px;
+  }
+
+  nav ul {
+    flex-direction: column;
+    padding: 0.5rem 1.25rem 1.25rem;
+    gap: 2px;
+  }
+
+  nav a {
+    display: block;
+    padding: 12px 14px;
+    font-size: 16px;
+  }
 }
 </style>
 </head>
@@ -432,7 +577,10 @@ footer a { color: rgba(255,255,255,0.75); }
     <a href="#" class="logo">
       <img src="logo-white.png" alt="1st Hartshorne Scout Group" style="height: 44px; width: auto;">
     </a>
-    <nav>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="primary-nav" data-open="false">
       <ul>
         <li><a href="#sections">Our sections</a></li>
         <li><a href="#meetings">Meeting times</a></li>
@@ -445,11 +593,18 @@ footer a { color: rgba(255,255,255,0.75); }
 
 <!-- HERO -->
 <div class="hero">
-  <h1>1st Hartshorne<br>Scout Group</h1>
-  <p>Register your interest in joining, find out when we meet, and learn more about what we do.</p>
-  <div class="hero-btns">
-    <a href="#join" class="btn btn-orange">Join one of our sections</a>
-    <a href="#meetings" class="btn btn-outline">When do we meet?</a>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <h1>1st Hartshorne<br>Scout Group</h1>
+      <p>Register your interest in joining, find out when we meet, and learn more about what we do.</p>
+      <div class="hero-btns">
+        <a href="#join" class="btn btn-orange">Join one of our sections</a>
+        <a href="#meetings" class="btn btn-outline">When do we meet?</a>
+      </div>
+    </div>
+    <div class="hero-photo">
+      <img src="beaver-running-jpg.jpg" alt="A young Beaver Scout taking part in a session at our meeting hall">
+    </div>
   </div>
 </div>
 <svg class="wave" viewBox="0 0 1440 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
@@ -468,16 +623,42 @@ footer a { color: rgba(255,255,255,0.75); }
         <p>We believe every young person deserves the chance to discover their potential — to make friends, try new things, and have a brilliant time doing it. Our volunteers are fully trained and DBS checked.</p>
       </div>
       <ul class="age-list">
-        <li class="li-beavers">🦫 Beavers <span class="ages">6–8 years</span></li>
-        <li class="li-cubs">🐻 Cubs <span class="ages">8–10½ years</span></li>
-        <li class="li-scouts">⚜️ Scouts <span class="ages">10½–14 years</span></li>
+        <li class="li-beavers">
+          <img src="beavers-logo-blue-png.png" alt="Beavers" class="wordmark">
+          <span class="ages">6–8 years</span>
+        </li>
+        <li class="li-cubs">
+          <img src="cubs-logo-green-png.png" alt="Cubs" class="wordmark">
+          <span class="ages">8–10½ years</span>
+        </li>
+        <li class="li-scouts">
+          <img src="scouts-logo-cropped.png" alt="Scouts" class="wordmark">
+          <span class="ages">10½–14 years</span>
+        </li>
       </ul>
     </div>
   </div>
 </section>
 
+<!-- WHAT WE DO -->
+<section class="alt" id="what-we-do">
+  <div class="container">
+    <div class="what-we-do">
+      <div class="what-we-do-photo">
+        <img src="canoes-jpg.jpg" alt="Young people taking part in a watersports session" loading="lazy">
+      </div>
+      <div>
+        <p class="section-heading">What we do</p>
+        <h2>Skills for life, every week</h2>
+        <p>From outdoor adventures to team games, our weekly sessions are packed with hands-on things to do. Each section enjoys activities and challenges suited to their age, plus badge work, friendships and plenty of fun — all led by trained, DBS-checked volunteers.</p>
+        <p>Days out, camps and special events run alongside the regular programme, so there's always something to look forward to.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- MEETINGS -->
-<section class="alt" id="meetings">
+<section id="meetings">
   <div class="container">
     <p class="section-heading">Meeting times</p>
     <h2>When and where we meet</h2>
@@ -487,7 +668,7 @@ footer a { color: rgba(255,255,255,0.75); }
       <div class="meeting-row">
         <div class="meeting-colour mc-beavers"></div>
         <div class="meeting-body">
-          <span class="meeting-name">🦫 Beavers</span>
+          <span class="meeting-name"><img src="beavers-logo-blue-png.png" alt="Beavers" class="wordmark"></span>
           <span class="meeting-ages">Ages 6–8</span>
           <span class="meeting-day">Monday evenings</span>
           <span class="meeting-time">5:45pm – 7:00pm</span>
@@ -497,7 +678,7 @@ footer a { color: rgba(255,255,255,0.75); }
       <div class="meeting-row">
         <div class="meeting-colour mc-cubs"></div>
         <div class="meeting-body">
-          <span class="meeting-name">🐻 Cubs</span>
+          <span class="meeting-name"><img src="cubs-logo-green-png.png" alt="Cubs" class="wordmark"></span>
           <span class="meeting-ages">Ages 8–10½</span>
           <span class="meeting-day">Friday evenings</span>
           <span class="meeting-time">7:00pm – 8:30pm</span>
@@ -507,7 +688,7 @@ footer a { color: rgba(255,255,255,0.75); }
       <div class="meeting-row">
         <div class="meeting-colour mc-scouts"></div>
         <div class="meeting-body">
-          <span class="meeting-name">⚜️ Scouts</span>
+          <span class="meeting-name"><img src="scouts-logo-cropped.png" alt="Scouts" class="wordmark"></span>
           <span class="meeting-ages">Ages 10½–14</span>
           <span class="meeting-day">Tuesday evenings</span>
           <span class="meeting-time">7:00pm – 9:00pm</span>
@@ -521,7 +702,7 @@ footer a { color: rgba(255,255,255,0.75); }
 </section>
 
 <!-- JOIN -->
-<section id="join">
+<section class="alt" id="join">
   <div class="container">
     <div class="join-grid">
       <div class="join-info">
@@ -541,6 +722,10 @@ footer a { color: rgba(255,255,255,0.75); }
       </div>
 
       <form action="https://formspree.io/f/mvzlllzg" method="POST">
+        <div class="hp-field" aria-hidden="true">
+          <label for="website">Leave this field empty</label>
+          <input type="text" id="website" name="_gotcha" tabindex="-1" autocomplete="off">
+        </div>
         <div>
           <label for="name">Parent / guardian name</label>
           <input type="text" id="name" name="name" placeholder="Your full name" required>
@@ -585,6 +770,7 @@ footer a { color: rgba(255,255,255,0.75); }
           <label for="message">Anything else you'd like us to know?</label>
           <textarea id="message" name="message" placeholder="Any questions or additional information about your child..."></textarea>
         </div>
+        <p class="form-note">By submitting this form you agree to us using the details you've provided to contact you about joining 1st Hartshorne Scout Group. We won't share your information with anyone else and we'll only keep it for as long as we need to respond to your enquiry. If we go on to register your child, we'll let you know separately about the Scout Association's own privacy notice.</p>
         <button type="submit" class="btn btn-purple btn-full" style="font-size: 16px; padding: 13px 24px;">Send enquiry →</button>
       </form>
     </div>
@@ -592,7 +778,7 @@ footer a { color: rgba(255,255,255,0.75); }
 </section>
 
 <!-- CONTACT -->
-<section class="alt" id="contact">
+<section id="contact">
   <div class="container">
     <p class="section-heading">Contact</p>
     <h2>Get in touch</h2>
@@ -624,9 +810,25 @@ footer a { color: rgba(255,255,255,0.75); }
     <p class="footer-name">1st Hartshorne Scout Group</p>
     <p style="color: rgba(255,255,255,0.75);">Registered charity · Part of The Scout Association · #SkillsForLife</p>
     <p style="color: rgba(255,255,255,0.75);">© <span id="year"></span> 1st Hartshorne Scout Group</p>
-    <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
   </div>
 </footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  const navToggle = document.querySelector(".nav-toggle");
+  const primaryNav = document.getElementById("primary-nav");
+  const setNav = (open) => {
+    navToggle.setAttribute("aria-expanded", String(open));
+    primaryNav.setAttribute("data-open", String(open));
+  };
+  navToggle.addEventListener("click", () => {
+    setNav(navToggle.getAttribute("aria-expanded") !== "true");
+  });
+  primaryNav.querySelectorAll("a").forEach(a => {
+    a.addEventListener("click", () => setNav(false));
+  });
+</script>
 
 </body>
 </html>
