@@ -402,21 +402,25 @@ p + p { margin-top: 0.75rem; }
   position: relative;
 }
 
+.adventure-photo::before {
+  content: '';
+  display: block;
+  padding-top: 75%; /* 4:3 default */
+}
+
+.adventure-photo-side::before { padding-top: 133.33%; /* 3:4 portrait */ }
+
 .adventure-photo img {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   display: block;
   object-fit: cover;
 }
 
-.adventure-photo-main { aspect-ratio: 4 / 3; }
-
-.adventure-photo-side {
-  aspect-ratio: 3 / 4;
-  transform: rotate(1.5deg);
-}
+.adventure-photo-side { transform: rotate(1.5deg); }
 
 /* ── MEETINGS ── */
 .meetings-list {
@@ -701,10 +705,8 @@ footer a { color: rgba(255,255,255,0.75); }
 
   .adventure-photos { grid-template-columns: 1fr; }
 
-  .adventure-photo-side {
-    aspect-ratio: 4 / 3;
-    transform: none;
-  }
+  .adventure-photo-side::before { padding-top: 75%; /* switch to 4:3 on mobile */ }
+  .adventure-photo-side { transform: none; }
 
   .meeting-body { grid-template-columns: 1fr 1fr; }
 
