@@ -5,9 +5,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>1st Hartshorne Scout Group</title>
 <meta name="description" content="1st Hartshorne Scout Group — Beavers, Cubs and Scouts in Hartshorne. Find out about our sections, meeting times, and how to join.">
+<meta name="theme-color" content="#7413dc">
+<meta property="og:title" content="1st Hartshorne Scout Group">
+<meta property="og:description" content="Beavers, Cubs and Scouts in Hartshorne. Find out about our sections, meeting times, and how to join.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://1sthartshornescouts.org/">
+<meta property="og:image" content="https://1sthartshornescouts.org/beaver-running-jpg.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://1sthartshornescouts.org/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800;6..12,900&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "1st Hartshorne Scout Group",
+  "url": "https://1sthartshornescouts.org/",
+  "email": "hello@1sthartshornescouts.org",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "St Peter's Church Hall, Manchester Lane",
+    "addressLocality": "Hartshorne",
+    "addressRegion": "Derbyshire",
+    "postalCode": "DE11 7BE",
+    "addressCountry": "GB"
+  }
+}
+</script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -40,6 +65,32 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.skip-link {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 100;
+  transform: translateY(-160%);
+  background: var(--white);
+  color: var(--purple);
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+}
+
+.skip-link:focus { transform: translateY(0); }
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: 3px;
+}
+
 /* ── HEADER ── */
 header {
   background: var(--purple);
@@ -64,6 +115,11 @@ header {
   align-items: center;
   gap: 12px;
   text-decoration: none;
+}
+
+.logo img {
+  height: 44px;
+  width: auto;
 }
 
 nav ul {
@@ -191,7 +247,17 @@ nav a:hover {
 .btn-outline { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.55); }
 .btn-outline:hover { border-color: white; }
 .btn-purple  { background: var(--purple); color: white; }
-.btn-full    { width: 100%; text-align: center; display: block; }
+.btn-full    { width: 100%; text-align: center; display: block; font-size: 16px; padding: 13px 24px; }
+
+.mobile-join-cta {
+  display: none;
+  position: fixed;
+  left: 1rem;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 40;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.24);
+}
 
 /* wave separator */
 .wave { display: block; margin-bottom: -2px; }
@@ -444,6 +510,24 @@ textarea { resize: vertical; min-height: 100px; }
   margin-top: -0.3rem;
 }
 
+.form-guidance {
+  background: white;
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.form-guidance strong {
+  color: var(--text);
+}
+
+.form-guidance p {
+  font-size: 14px;
+}
+
+.form-guidance a { color: var(--purple); font-weight: 800; }
+
 /* ── CONTACT ── */
 .contact-tiles {
   display: grid;
@@ -477,6 +561,31 @@ textarea { resize: vertical; min-height: 100px; }
 
 .contact-tile-value a { color: var(--purple); text-decoration: none; }
 .contact-tile-value a:hover { text-decoration: underline; }
+
+/* ── FAQ ── */
+.faq-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.faq-item {
+  background: white;
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+}
+
+.faq-item p { font-size: 15px; }
+
+.inline-note {
+  margin-top: 1.25rem;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.footer-note { color: rgba(255,255,255,0.75); }
 
 /* ── FOOTER ── */
 footer {
@@ -512,7 +621,8 @@ footer a { color: rgba(255,255,255,0.75); }
 @media (max-width: 700px) {
   .sections-intro,
   .what-we-do,
-  .join-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .join-grid,
+  .faq-list { grid-template-columns: 1fr; gap: 2rem; }
 
   .meeting-body { grid-template-columns: 1fr 1fr; }
 
@@ -566,16 +676,21 @@ footer a { color: rgba(255,255,255,0.75); }
     padding: 12px 14px;
     font-size: 16px;
   }
+
+  .mobile-join-cta { display: block; }
+
+  body { padding-bottom: 82px; }
 }
 </style>
 </head>
 <body>
+<a href="#main" class="skip-link">Skip to main content</a>
 
 <!-- HEADER -->
 <header>
   <div class="header-inner">
     <a href="#" class="logo">
-      <img src="logo-white.png" alt="1st Hartshorne Scout Group" style="height: 44px; width: auto;">
+      <img src="logo-white.png" alt="1st Hartshorne Scout Group" width="2225" height="819">
     </a>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
       <span></span><span></span><span></span>
@@ -591,6 +706,8 @@ footer a { color: rgba(255,255,255,0.75); }
   </div>
 </header>
 
+<main id="main">
+
 <!-- HERO -->
 <div class="hero">
   <div class="hero-inner">
@@ -603,7 +720,7 @@ footer a { color: rgba(255,255,255,0.75); }
       </div>
     </div>
     <div class="hero-photo">
-      <img src="beaver-running-jpg.jpg" alt="A young Beaver Scout taking part in a session at our meeting hall">
+      <img src="beaver-running-jpg.jpg" alt="A young Beaver Scout taking part in a session at our meeting hall" width="2000" height="1333">
     </div>
   </div>
 </div>
@@ -624,15 +741,15 @@ footer a { color: rgba(255,255,255,0.75); }
       </div>
       <ul class="age-list">
         <li class="li-beavers">
-          <img src="beavers-logo-blue-png.png" alt="Beavers" class="wordmark">
+          <img src="beavers-logo-blue-png.png" alt="Beavers" class="wordmark" width="1091" height="307">
           <span class="ages">6–8 years</span>
         </li>
         <li class="li-cubs">
-          <img src="cubs-logo-green-png.png" alt="Cubs" class="wordmark">
+          <img src="cubs-logo-green-png.png" alt="Cubs" class="wordmark" width="732" height="283">
           <span class="ages">8–10½ years</span>
         </li>
         <li class="li-scouts">
-          <img src="scouts-logo-cropped.png" alt="Scouts" class="wordmark">
+          <img src="scouts-logo-cropped.png" alt="Scouts" class="wordmark" width="460" height="150">
           <span class="ages">10½–14 years</span>
         </li>
       </ul>
@@ -645,7 +762,7 @@ footer a { color: rgba(255,255,255,0.75); }
   <div class="container">
     <div class="what-we-do">
       <div class="what-we-do-photo">
-        <img src="canoes-jpg.jpg" alt="Young people taking part in a watersports session" loading="lazy">
+        <img src="canoes-jpg.jpg" alt="Young people taking part in a watersports session" width="1024" height="768" loading="lazy">
       </div>
       <div>
         <p class="section-heading">What we do</p>
@@ -668,7 +785,7 @@ footer a { color: rgba(255,255,255,0.75); }
       <div class="meeting-row">
         <div class="meeting-colour mc-beavers"></div>
         <div class="meeting-body">
-          <span class="meeting-name"><img src="beavers-logo-blue-png.png" alt="Beavers" class="wordmark"></span>
+          <span class="meeting-name"><img src="beavers-logo-blue-png.png" alt="Beavers" class="wordmark" width="1091" height="307"></span>
           <span class="meeting-ages">Ages 6–8</span>
           <span class="meeting-day">Monday evenings</span>
           <span class="meeting-time">5:45pm – 7:00pm</span>
@@ -678,7 +795,7 @@ footer a { color: rgba(255,255,255,0.75); }
       <div class="meeting-row">
         <div class="meeting-colour mc-cubs"></div>
         <div class="meeting-body">
-          <span class="meeting-name"><img src="cubs-logo-green-png.png" alt="Cubs" class="wordmark"></span>
+          <span class="meeting-name"><img src="cubs-logo-green-png.png" alt="Cubs" class="wordmark" width="732" height="283"></span>
           <span class="meeting-ages">Ages 8–10½</span>
           <span class="meeting-day">Friday evenings</span>
           <span class="meeting-time">7:00pm – 8:30pm</span>
@@ -688,7 +805,7 @@ footer a { color: rgba(255,255,255,0.75); }
       <div class="meeting-row">
         <div class="meeting-colour mc-scouts"></div>
         <div class="meeting-body">
-          <span class="meeting-name"><img src="scouts-logo-cropped.png" alt="Scouts" class="wordmark"></span>
+          <span class="meeting-name"><img src="scouts-logo-cropped.png" alt="Scouts" class="wordmark" width="460" height="150"></span>
           <span class="meeting-ages">Ages 10½–14</span>
           <span class="meeting-day">Tuesday evenings</span>
           <span class="meeting-time">7:00pm – 9:00pm</span>
@@ -697,7 +814,7 @@ footer a { color: rgba(255,255,255,0.75); }
       </div>
     </div>
 
-    <p style="margin-top: 1.25rem; font-size: 13px; color: var(--muted);">All meetings run during term time only.</p>
+    <p class="inline-note">All meetings run during term time only.</p>
   </div>
 </section>
 
@@ -721,7 +838,11 @@ footer a { color: rgba(255,255,255,0.75); }
         </div>
       </div>
 
-      <form action="https://formspree.io/f/mvzlllzg" method="POST">
+      <div>
+        <div class="form-guidance">
+          <p><strong>Already contacted us through scouts.org.uk?</strong> You do not need to fill this form in as well. If this is your first enquiry, use the form below and we will get back to you.</p>
+        </div>
+        <form action="https://formspree.io/f/mvzlllzg" method="POST">
         <div class="hp-field" aria-hidden="true">
           <label for="website">Leave this field empty</label>
           <input type="text" id="website" name="_gotcha" tabindex="-1" autocomplete="off">
@@ -758,21 +879,39 @@ footer a { color: rgba(255,255,255,0.75); }
           </select>
         </div>
         <div>
-          <label for="osm">Have you already submitted a request via scouts.org.uk?</label>
-          <select id="osm" name="already_applied">
-            <option value="">Please select...</option>
-            <option value="yes">Yes — I have already used the Group Finder</option>
-            <option value="no">No — this is my first enquiry</option>
-          </select>
-          <p class="form-note">If you have already submitted via the Scout Association website, you don't need to fill this form in as well.</p>
-        </div>
-        <div>
           <label for="message">Anything else you'd like us to know?</label>
           <textarea id="message" name="message" placeholder="Any questions or additional information about your child..."></textarea>
         </div>
         <p class="form-note">By submitting this form you agree to us using the details you've provided to contact you about joining 1st Hartshorne Scout Group. We won't share your information with anyone else and we'll only keep it for as long as we need to respond to your enquiry. If we go on to register your child, we'll let you know separately about the Scout Association's own privacy notice.</p>
-        <button type="submit" class="btn btn-purple btn-full" style="font-size: 16px; padding: 13px 24px;">Send enquiry →</button>
+        <button type="submit" class="btn btn-purple btn-full">Send enquiry &rarr;</button>
       </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT STEPS -->
+<section id="next-steps">
+  <div class="container">
+    <p class="section-heading">What happens next?</p>
+    <h2>After you enquire</h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <h3>We reply to your enquiry</h3>
+        <p>One of our volunteers will contact you to confirm the right section and talk through availability.</p>
+      </div>
+      <div class="faq-item">
+        <h3>You arrange a first visit</h3>
+        <p>We will let you know when to come along, what to expect, and anything your child needs to bring.</p>
+      </div>
+      <div class="faq-item">
+        <h3>We share joining details</h3>
+        <p>If your child joins, we will explain registration, subs, uniform and the information we need from you.</p>
+      </div>
+      <div class="faq-item">
+        <h3>If there is a waiting list</h3>
+        <p>If a section is full, we will explain the current position and keep your enquiry on record.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -800,16 +939,26 @@ footer a { color: rgba(255,255,255,0.75); }
           <a href="https://www.scouts.org.uk" target="_blank" rel="noopener">scouts.org.uk</a>
         </div>
       </div>
+      <div class="contact-tile">
+        <div class="contact-tile-label">Directions</div>
+        <div class="contact-tile-value">
+          <a href="https://www.google.com/maps/search/?api=1&query=St%20Peter%27s%20Church%20Hall%2C%20Manchester%20Lane%2C%20Hartshorne%2C%20Derbyshire%2C%20DE11%207BE" target="_blank" rel="noopener">Open in Google Maps</a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
+
+</main>
+
+<a href="#join" class="btn btn-orange mobile-join-cta">Join one of our sections</a>
 
 <!-- FOOTER -->
 <footer>
   <div class="footer-inner">
     <p class="footer-name">1st Hartshorne Scout Group</p>
-    <p style="color: rgba(255,255,255,0.75);">Registered charity · Part of The Scout Association · #SkillsForLife</p>
-    <p style="color: rgba(255,255,255,0.75);">© <span id="year"></span> 1st Hartshorne Scout Group</p>
+    <p class="footer-note">Part of The Scout Association · #SkillsForLife</p>
+    <p class="footer-note">© <span id="year"></span> 1st Hartshorne Scout Group</p>
   </div>
 </footer>
 
