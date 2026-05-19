@@ -3,16 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>1st Hartshorne Scout Group</title>
-<meta name="description" content="1st Hartshorne Scout Group — Beavers, Cubs and Scouts in Hartshorne. Find out about our sections, meeting times, and how to join.">
+<title>1st Hartshorne Scout Group | Beavers, Cubs &amp; Scouts in Hartshorne, Derbyshire</title>
+<meta name="description" content="Beavers, Cubs and Scouts for ages 6–14 in Hartshorne, Derbyshire. Weekly meetings at St Peter's Church Hall. Find out when we meet and register your interest in joining.">
 <meta name="theme-color" content="#7413dc">
-<meta property="og:title" content="1st Hartshorne Scout Group">
-<meta property="og:description" content="Beavers, Cubs and Scouts in Hartshorne. Find out about our sections, meeting times, and how to join.">
+<meta property="og:site_name" content="1st Hartshorne Scout Group">
+<meta property="og:title" content="1st Hartshorne Scout Group | Beavers, Cubs &amp; Scouts in Hartshorne">
+<meta property="og:description" content="Beavers, Cubs and Scouts for ages 6–14 in Hartshorne, Derbyshire. Weekly meetings at St Peter's Church Hall. Find out when we meet and register your interest.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://1sthartshornescouts.org/">
 <meta property="og:image" content="https://1sthartshornescouts.org/beaver-running-jpg.jpg">
+<meta property="og:image:width" content="2000">
+<meta property="og:image:height" content="1333">
+<meta property="og:locale" content="en_GB">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="1st Hartshorne Scout Group">
+<meta name="twitter:description" content="Beavers, Cubs and Scouts for ages 6–14 in Hartshorne, Derbyshire. Find out when we meet and how to join.">
+<meta name="twitter:image" content="https://1sthartshornescouts.org/beaver-running-jpg.jpg">
 <link rel="canonical" href="https://1sthartshornescouts.org/">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preload" as="image" href="beaver-running-jpg.jpg" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800;6..12,900&display=swap" rel="stylesheet">
@@ -21,8 +30,12 @@
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "1st Hartshorne Scout Group",
+  "alternateName": "1st Hartshorne Scouts",
+  "description": "1st Hartshorne Scout Group runs Beavers, Cubs and Scouts for young people aged 6 to 14 in Hartshorne, Derbyshire. We meet weekly during term time at St Peter's Church Hall.",
   "url": "https://1sthartshornescouts.org/",
   "email": "hello@1sthartshornescouts.org",
+  "logo": "https://1sthartshornescouts.org/logo-white.png",
+  "image": "https://1sthartshornescouts.org/beaver-running-jpg.jpg",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "St Peter's Church Hall, Manchester Lane",
@@ -30,6 +43,15 @@
     "addressRegion": "Derbyshire",
     "postalCode": "DE11 7BE",
     "addressCountry": "GB"
+  },
+  "areaServed": {
+    "@type": "Place",
+    "name": "Hartshorne, Derbyshire"
+  },
+  "memberOf": {
+    "@type": "Organization",
+    "name": "The Scout Association",
+    "url": "https://www.scouts.org.uk"
   }
 }
 </script>
@@ -644,6 +666,28 @@ footer {
 .footer-name { font-size: 15px; font-weight: 800; color: white; }
 footer a { color: rgba(255,255,255,0.75); }
 
+/* ── FORM STATES ── */
+.form-success {
+  background: #edfaf2;
+  border: 1.5px solid var(--green);
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+  text-align: center;
+}
+
+.form-success p {
+  color: #1a6636;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.form-error {
+  font-size: 14px;
+  color: #c0392b;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
 /* ── HONEYPOT ── */
 .hp-field {
   position: absolute;
@@ -765,7 +809,7 @@ footer a { color: rgba(255,255,255,0.75); }
       </div>
     </div>
     <div class="hero-photo">
-      <img src="beaver-running-jpg.jpg" alt="A young Beaver Scout taking part in a session at our meeting hall" width="2000" height="1333">
+      <img src="beaver-running-jpg.jpg" alt="A young Beaver Scout taking part in a session at our meeting hall" width="2000" height="1333" fetchpriority="high">
     </div>
   </div>
 </div>
@@ -1043,6 +1087,36 @@ footer a { color: rgba(255,255,255,0.75); }
   });
   primaryNav.querySelectorAll("a").forEach(a => {
     a.addEventListener("click", () => setNav(false));
+  });
+
+  const joinForm = document.querySelector("form");
+  joinForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const btn = joinForm.querySelector("[type=submit]");
+    btn.disabled = true;
+    btn.textContent = "Sending…";
+    try {
+      const res = await fetch(joinForm.action, {
+        method: "POST",
+        body: new FormData(joinForm),
+        headers: { Accept: "application/json" }
+      });
+      if (res.ok) {
+        joinForm.innerHTML = '<div class="form-success"><p>Thank you — we’ll be in touch within a few days!</p></div>';
+      } else {
+        throw new Error();
+      }
+    } catch {
+      btn.disabled = false;
+      btn.textContent = "Send enquiry →";
+      let err = joinForm.querySelector(".form-error");
+      if (!err) {
+        err = document.createElement("p");
+        err.className = "form-error";
+        joinForm.appendChild(err);
+      }
+      err.textContent = "Something went wrong — please try again or email us directly.";
+    }
   });
 </script>
 
