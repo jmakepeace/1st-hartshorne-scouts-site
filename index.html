@@ -366,6 +366,42 @@ p + p { margin-top: 0.75rem; }
   display: block;
 }
 
+/* ── ADVENTURES ── */
+.adventures-grid {
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.adventure-photos {
+  display: grid;
+  grid-template-columns: 1fr 0.72fr;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.adventure-photo {
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--border);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+}
+
+.adventure-photo img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.adventure-photo-main { aspect-ratio: 4 / 3; }
+
+.adventure-photo-side {
+  aspect-ratio: 3 / 4;
+  transform: rotate(1.5deg);
+}
+
 /* ── MEETINGS ── */
 .meetings-list {
   display: flex;
@@ -621,8 +657,16 @@ footer a { color: rgba(255,255,255,0.75); }
 @media (max-width: 700px) {
   .sections-intro,
   .what-we-do,
+  .adventures-grid,
   .join-grid,
   .faq-list { grid-template-columns: 1fr; gap: 2rem; }
+
+  .adventure-photos { grid-template-columns: 1fr; }
+
+  .adventure-photo-side {
+    aspect-ratio: 4 / 3;
+    transform: none;
+  }
 
   .meeting-body { grid-template-columns: 1fr 1fr; }
 
@@ -698,6 +742,7 @@ footer a { color: rgba(255,255,255,0.75); }
     <nav id="primary-nav" data-open="false">
       <ul>
         <li><a href="#sections">Our sections</a></li>
+        <li><a href="#adventures">Adventures</a></li>
         <li><a href="#meetings">Meeting times</a></li>
         <li><a href="#join">Join us</a></li>
         <li><a href="#contact">Contact</a></li>
@@ -769,6 +814,28 @@ footer a { color: rgba(255,255,255,0.75); }
         <h2>Skills for life, every week</h2>
         <p>From outdoor adventures to team games, our weekly sessions are packed with hands-on things to do. Each section enjoys activities and challenges suited to their age, plus badge work, friendships and plenty of fun — all led by trained, DBS-checked volunteers.</p>
         <p>Days out, camps and special events run alongside the regular programme, so there's always something to look forward to.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADVENTURES -->
+<section id="adventures">
+  <div class="container">
+    <div class="adventures-grid">
+      <div>
+        <p class="section-heading">Camps and adventures</p>
+        <h2>Outdoor skills, confidence and memories</h2>
+        <p>Scouting is not just about weekly meetings. Our young people get the chance to camp, explore outdoors, learn practical skills and take part in adventures throughout the year.</p>
+        <p>From pitching tents to cooking outdoors and spending time with friends, camps are a brilliant way to build confidence and independence.</p>
+      </div>
+      <div class="adventure-photos">
+        <div class="adventure-photo adventure-photo-main">
+          <img src="camp-wide-earlier-year.jpg" alt="Scout camp tents pitched in a field beside woodland" width="2000" height="1500" loading="lazy">
+        </div>
+        <div class="adventure-photo adventure-photo-side">
+          <img src="camp-tents-weekend.jpg" alt="A blue tent pitched in long grass during a Scout camp" width="1536" height="2048" loading="lazy">
+        </div>
       </div>
     </div>
   </div>
