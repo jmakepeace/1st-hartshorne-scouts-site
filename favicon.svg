@@ -1,4 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
   <rect width="32" height="32" rx="7" fill="#7413dc"/>
-  <text x="16" y="23" font-family="system-ui, sans-serif" font-size="14" font-weight="900" text-anchor="middle" fill="white">1H</text>
+  <g fill="white">
+    <!-- Top bead -->
+    <circle cx="16" cy="5.5" r="1.8"/>
+    <!-- Centre petal -->
+    <path d="M16 7.8 C14.2 10.2 13 13.2 13 16.2 C13 18.4 14.2 19.8 16 20.8 C17.8 19.8 19 18.4 19 16.2 C19 13.2 17.8 10.2 16 7.8Z"/>
+    <!-- Left petal -->
+    <path d="M13 16.5 C11.2 15.5 9 14.2 8.5 12.2 C8 10.2 9 9.2 10.2 9.8 C9.2 11.2 9.8 13.8 13 16.5Z"/>
+    <!-- Right petal -->
+    <path d="M19 16.5 C20.8 15.5 23 14.2 23.5 12.2 C24 10.2 23 9.2 21.8 9.8 C22.8 11.2 22.2 13.8 19 16.5Z"/>
+    <!-- Band -->
+    <rect x="9" y="20.8" width="14" height="2.5" rx="1.25"/>
+    <!-- Base knot -->
+    <path d="M12.5 23.3 L12.5 24.8 C12.5 26 14 27 16 27 C18 27 19.5 26 19.5 24.8 L19.5 23.3Z"/>
+  </g>
 </svg>
