@@ -306,6 +306,44 @@ h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.4rem; }
 p { color: var(--muted); }
 p + p { margin-top: 0.75rem; }
 
+/* ── IMPACT/STATS ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+  text-align: center;
+}
+
+.stat-card {
+  padding: 2rem;
+  background: white;
+  border: 1.5px solid var(--border);
+  border-radius: 18px;
+  transition: transform 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+.stat-number {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--purple);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
 /* ── SECTIONS ── */
 .sections-intro {
   display: grid;
@@ -377,6 +415,49 @@ p + p { margin-top: 0.75rem; }
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+/* ── GALLERY ── */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.gallery-item {
+  border-radius: 18px;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  background: var(--border);
+  position: relative;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.gallery-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  padding: 2rem;
+  text-align: center;
+}
+
+.gallery-placeholder i {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.gallery-placeholder span {
+  font-weight: 700;
+  font-size: 0.9rem;
 }
 
 /* ── ADVENTURES ── */
@@ -585,6 +666,21 @@ textarea { resize: vertical; min-height: 100px; }
 .form-guidance a { color: var(--purple); font-weight: 800; }
 
 /* ── CONTACT ── */
+.map-container {
+  margin-top: 2rem;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1.5px solid var(--border);
+  height: 350px;
+  background: var(--bg);
+}
+
+.map-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
 .contact-tiles {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -647,7 +743,7 @@ textarea { resize: vertical; min-height: 100px; }
 footer {
   background: var(--purple);
   color: rgba(255,255,255,0.75);
-  padding: 2.5rem 2rem;
+  padding: 4rem 2rem;
   text-align: center;
   font-size: 14px;
 }
@@ -658,7 +754,25 @@ footer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.4rem;
+  gap: 1rem;
+}
+
+.footer-links {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.footer-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
 }
 
 .footer-name { font-size: 15px; font-weight: 800; color: white; }
@@ -782,6 +896,8 @@ footer a { color: rgba(255,255,255,0.75); }
         <li><a href="#adventures">Adventures</a></li>
         <li><a href="#meetings">Meeting times</a></li>
         <li><a href="#join">Join us</a></li>
+        <li><a href="https://www.onlinescoutmanager.co.uk/login.php" target="_blank" rel="noopener">OSM</a></li>
+        <li><a href="https://www.scouts.org.uk/volunteers/staying-safe-and-safeguarding/" target="_blank" rel="noopener">Staying Safe</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
@@ -794,11 +910,11 @@ footer a { color: rgba(255,255,255,0.75); }
 <div class="hero">
   <div class="hero-inner">
     <div class="hero-text">
-      <h1>1st Hartshorne<br>Scout Group</h1>
-      <p>Register your interest in joining, find out when we meet, and learn more about what we do.</p>
+      <h1>Adventure starts here.</h1>
+      <p>1st Hartshorne Scout Group provides young people with skills for life, amazing memories, and the confidence to take on the world.</p>
       <div class="hero-btns">
-        <a href="#join" class="btn btn-orange">Join one of our sections</a>
-        <a href="#meetings" class="btn btn-outline">When do we meet?</a>
+        <a href="#join" class="btn btn-orange">Join the adventure</a>
+        <a href="#sections" class="btn btn-outline">Explore our sections</a>
       </div>
     </div>
     <div class="hero-photo">
@@ -835,6 +951,55 @@ footer a { color: rgba(255,255,255,0.75); }
           <span class="ages">10½–14 years</span>
         </li>
       </ul>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-number">60+</span>
+        <span class="stat-label">Active Youth Members</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">50+</span>
+        <span class="stat-label">Years of Scouting</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">100%</span>
+        <span class="stat-label">Volunteer Led</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">#1</span>
+        <span class="stat-label">South Derbyshire District</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY PLACEHOLDER -->
+<section class="alt" id="gallery">
+  <div class="container">
+    <p class="section-heading">Life at 1st Hartshorne</p>
+    <h2>Capturing the adventure</h2>
+    <p>Take a look at some of the things we've been up to recently. From community events to high-adrenaline activities, there's never a dull moment.</p>
+
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <span>Beaver Activities</span>
+          <p style="font-size: 12px; margin-top: 5px;">Photo coming soon</p>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <span>Cub Camp Fire</span>
+          <p style="font-size: 12px; margin-top: 5px;">Photo coming soon</p>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <span>Scout Pioneering</span>
+          <p style="font-size: 12px; margin-top: 5px;">Photo coming soon</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1026,6 +1191,11 @@ footer a { color: rgba(255,255,255,0.75); }
     <p class="section-heading">Contact</p>
     <h2>Get in touch</h2>
     <p>You can also reach us directly using the details below.</p>
+
+    <div class="map-container">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2413.565985011684!2d-1.5348981232840583!3d52.77583681604725!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487a027964402651%3A0x600100693a105f2b!2sSt%20Peter&#39;s%20Church%20Hall!5e0!3m2!1sen!2suk!4v1709123456789!5m2!1sen!2suk" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+
     <div class="contact-tiles">
       <div class="contact-tile">
         <div class="contact-tile-label">Email</div>
@@ -1059,8 +1229,13 @@ footer a { color: rgba(255,255,255,0.75); }
 <!-- FOOTER -->
 <footer>
   <div class="footer-inner">
+    <div class="footer-links">
+      <a href="https://www.onlinescoutmanager.co.uk/login.php" target="_blank" rel="noopener">Online Scout Manager</a>
+      <a href="https://www.scouts.org.uk/volunteers/staying-safe-and-safeguarding/" target="_blank" rel="noopener">Safeguarding</a>
+      <a href="https://www.scouts.org.uk" target="_blank" rel="noopener">The Scout Association</a>
+    </div>
     <p class="footer-name">1st Hartshorne Scout Group</p>
-    <p class="footer-note">Part of The Scout Association · #SkillsForLife</p>
+    <p class="footer-note">Part of South Derbyshire District · #SkillsForLife</p>
     <p class="footer-note">© <span id="year"></span> 1st Hartshorne Scout Group</p>
   </div>
 </footer>
