@@ -27,10 +27,13 @@ async function proxy(request, host) {
   target.hostname = host
   target.port = ''
   target.protocol = 'https:'
-  const proxied = new Request(target, request)
-  proxied.headers.set('X-Forwarded-Host', new URL(request.url).host)
-  proxied.headers.set('X-Forwarded-Proto', 'https')
-  return fetch(proxied, { redirect: 'manual' })
+  // redirect:'manual' must be set on the Request itself — passing it as the
+  // fetch init is ignored when the first arg is a Request, which would make the
+  // Worker follow the apps' SSO 3xx internally and break login.
+  const base = new Request(target, request)
+  base.headers.set('X-Forwarded-Host', new URL(request.url).host)
+  base.headers.set('X-Forwarded-Proto', 'https')
+  return fetch(new Request(base, { redirect: 'manual' }))
 }
 
 export default {
