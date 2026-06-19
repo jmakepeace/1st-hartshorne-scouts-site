@@ -1,15 +1,12 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "1st-hartshorne-scouts-site",
-  "main": "worker.js",
   "compatibility_date": "2026-05-12",
   "observability": {
     "enabled": true
   },
   "assets": {
-    "directory": ".",
-    "binding": "ASSETS",
-    "run_worker_first": true
+    "directory": "."
   },
   "compatibility_flags": [
     "nodejs_compat"
