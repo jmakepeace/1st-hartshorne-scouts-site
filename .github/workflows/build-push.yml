@@ -69,6 +69,10 @@ jobs:
 
       - name: Bump argo deployment
         run: |
+          if [ -z "${GH_PAT:-}" ]; then
+            echo "GH_PAT not available yet — skipping argo bump"
+            exit 0
+          fi
           git clone "https://x-access-token:${GH_PAT}@github.com/jmakepeace/argo.git" /tmp/argo
           cd /tmp/argo
           sed -i "s|registry.makepeace.cc/scouts-site:[^[:space:]]*|registry.makepeace.cc/scouts-site:${{ steps.tag.outputs.new_tag }}|" Deployments/scouts/scouts-site-deployment.yaml
