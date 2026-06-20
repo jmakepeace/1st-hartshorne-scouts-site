@@ -578,6 +578,73 @@ p + p { margin-top: 0.75rem; }
   grid-column: 1 / 2;
 }
 
+/* ── PROGRAMME ── */
+.programme-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.programme-col-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--border);
+}
+
+.programme-col-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.programme-col-label {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.programme-item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.programme-item:last-child { border-bottom: none; }
+
+.programme-date {
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--purple);
+  margin-bottom: 2px;
+}
+
+.programme-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+.programme-notes {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 3px;
+  line-height: 1.4;
+}
+
+.programme-empty {
+  color: var(--muted);
+  font-size: 14px;
+  font-style: italic;
+  padding: 0.5rem 0;
+}
+
 /* ── JOIN ── */
 .join-grid {
   display: grid;
@@ -822,7 +889,8 @@ footer a { color: rgba(255,255,255,0.75); }
   .what-we-do,
   .adventures-grid,
   .join-grid,
-  .faq-list { grid-template-columns: 1fr; gap: 2rem; }
+  .faq-list,
+  .programme-grid { grid-template-columns: 1fr; gap: 2rem; }
 
   .adventure-photos { grid-template-columns: 1fr; }
 
@@ -1095,6 +1163,18 @@ footer a { color: rgba(255,255,255,0.75); }
   </div>
 </section>
 
+<!-- PROGRAMME -->
+<section id="programme">
+  <div class="container">
+    <p class="section-heading">What's coming up</p>
+    <h2>Upcoming sessions</h2>
+    <p>A look at what each section has planned over the next few weeks.</p>
+    <div id="programme-grid" class="programme-grid">
+      <p style="color:var(--muted);font-style:italic">Loading programme&hellip;</p>
+    </div>
+  </div>
+</section>
+
 <!-- JOIN -->
 <section class="alt" id="join">
   <div class="container">
@@ -1263,6 +1343,57 @@ footer a { color: rgba(255,255,255,0.75); }
   primaryNav.querySelectorAll("a").forEach(a => {
     a.addEventListener("click", () => setNav(false));
   });
+
+  // Programme
+  (function () {
+    var DAYS   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var SECTIONS = [
+      { key: 'beavers', label: 'Beavers', color: 'var(--beavers)' },
+      { key: 'cubs',    label: 'Cubs',    color: 'var(--cubs)'    },
+      { key: 'scouts',  label: 'Scouts',  color: 'var(--scouts)'  },
+    ];
+
+    function fmtDate(s) {
+      var d = new Date(s + 'T00:00:00');
+      return DAYS[d.getDay()] + ' ' + d.getDate() + ' ' + MONTHS[d.getMonth()];
+    }
+
+    function esc(s) {
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    fetch('program.json')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var grid = document.getElementById('programme-grid');
+        var html = '';
+        SECTIONS.forEach(function(sec) {
+          var meetings = (data.sections || {})[sec.key] || [];
+          html += '<div class="programme-col">';
+          html += '<div class="programme-col-header">';
+          html += '<span class="programme-col-dot" style="background:' + sec.color + '"></span>';
+          html += '<span class="programme-col-label">' + sec.label + '</span>';
+          html += '</div>';
+          if (meetings.length === 0) {
+            html += '<p class="programme-empty">No sessions planned yet.</p>';
+          } else {
+            meetings.forEach(function(m) {
+              html += '<div class="programme-item">';
+              html += '<div class="programme-date">' + esc(fmtDate(m.date)) + '</div>';
+              html += '<div class="programme-title">' + esc(m.title || 'Session') + '</div>';
+              if (m.notes) html += '<div class="programme-notes">' + esc(m.notes) + '</div>';
+              html += '</div>';
+            });
+          }
+          html += '</div>';
+        });
+        grid.innerHTML = html;
+      })
+      .catch(function() {
+        document.getElementById('programme-grid').innerHTML = '';
+      });
+  })();
 
   const joinForm = document.querySelector("form");
   joinForm.addEventListener("submit", async (e) => {

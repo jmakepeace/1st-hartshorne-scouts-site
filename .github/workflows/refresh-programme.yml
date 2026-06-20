@@ -1,0 +1,31 @@
+name: Refresh OSM programme
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: home-k8s
+
+    steps:
+      - uses: actions/checkout@v7.0.0
+
+      - name: Fetch OSM programme
+        run: python3 fetch_programme.py
+
+      - name: Commit if changed
+        run: |
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          if git diff --quiet program.json; then
+            echo "No changes to program.json"
+          else
+            git add program.json
+            git commit -m "chore: refresh OSM programme data"
+            git push
+          fi
