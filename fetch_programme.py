@@ -25,10 +25,17 @@ def osm_post(path, data):
 
 
 def osm_get(path, token):
+    import urllib.error
     req = urllib.request.Request(OSM_BASE + path)
     req.add_header("Authorization", "Bearer " + token)
-    with urllib.request.urlopen(req) as r:
-        return json.loads(r.read())
+    try:
+        with urllib.request.urlopen(req) as r:
+            return json.loads(r.read())
+    except urllib.error.HTTPError as e:
+        body = e.read()
+        print("HTTP", e.code, path)
+        print("Response body:", body[:500])
+        raise
 
 
 def get_token():
@@ -65,12 +72,23 @@ def find_terms(section_data):
 
 
 def get_meetings(token, section_id, term_id):
-    path = (
-        "/ext/programme/meetings/?action=getSummary"
-        + "&section_id=" + str(section_id)
-        + "&term_id=" + str(term_id)
-    )
-    result = osm_get(path, token)
+    # Try both underscore and no-underscore variants (OSM API is inconsistent)
+    candidates = [
+        "/ext/programme/meetings/?action=getSummary&section_id={sid}&term_id={tid}",
+        "/ext/programme/meetings?action=getSummary&sectionid={sid}&termid={tid}",
+        "/ext/programme/meetings/?action=getSummary&sectionid={sid}&termid={tid}",
+    ]
+    result = None
+    for tmpl in candidates:
+        path = tmpl.format(sid=section_id, tid=term_id)
+        try:
+            result = osm_get(path, token)
+            print("    OK:", path)
+            break
+        except Exception as e:
+            print("    FAILED:", path, "->", e)
+    if result is None:
+        return []
     print("    raw response keys:", list(result.keys()) if isinstance(result, dict) else type(result))
     data = result.get("data", {}) if isinstance(result, dict) else {}
     if isinstance(data, list):
@@ -85,6 +103,7 @@ def get_meetings(token, section_id, term_id):
 def upcoming(token, section_id, section_data, n=3):
     today = datetime.date.today()
     current, nxt = find_terms(section_data)
+    print(f"    current term: {current}")
     meetings = []
     if current:
         meetings += get_meetings(token, section_id, current["term_id"])
