@@ -28,13 +28,14 @@ def osm_get(path, token):
     import urllib.error
     req = urllib.request.Request(OSM_BASE + path)
     req.add_header("Authorization", "Bearer " + token)
+    req.add_header("Accept", "application/json")
     try:
         with urllib.request.urlopen(req) as r:
             return json.loads(r.read())
     except urllib.error.HTTPError as e:
         body = e.read()
         print("HTTP", e.code, path)
-        print("Response body:", body[:500])
+        print("Response body:", body[:300])
         raise
 
 
@@ -72,24 +73,14 @@ def find_terms(section_data):
 
 
 def get_meetings(token, section_id, term_id):
-    # Try both underscore and no-underscore variants (OSM API is inconsistent)
-    candidates = [
-        "/ext/programme/meetings/?action=getSummary&section_id={sid}&term_id={tid}",
-        "/ext/programme/meetings?action=getSummary&sectionid={sid}&termid={tid}",
-        "/ext/programme/meetings/?action=getSummary&sectionid={sid}&termid={tid}",
-    ]
-    result = None
-    for tmpl in candidates:
-        path = tmpl.format(sid=section_id, tid=term_id)
-        try:
-            result = osm_get(path, token)
-            print("    OK:", path)
-            break
-        except Exception as e:
-            print("    FAILED:", path, "->", e)
-    if result is None:
-        return []
-    print("    raw response keys:", list(result.keys()) if isinstance(result, dict) else type(result))
+    path = (
+        "/ext/programme/meetings/?action=getSummary"
+        "&section_id=" + str(section_id) +
+        "&term_id=" + str(term_id)
+    )
+    result = osm_get(path, token)
+    print("    raw keys:", list(result.keys()) if isinstance(result, dict) else type(result))
+    print("   ", json.dumps(result)[:400])
     data = result.get("data", {}) if isinstance(result, dict) else {}
     if isinstance(data, list):
         return data
