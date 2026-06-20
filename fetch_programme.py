@@ -24,9 +24,9 @@ def osm_post(path, data):
         return json.loads(r.read())
 
 
-def osm_get(path, token):
+def osm_get_base(base, path, token):
     import urllib.error
-    req = urllib.request.Request(OSM_BASE + path)
+    req = urllib.request.Request(base + path)
     req.add_header("Authorization", "Bearer " + token)
     req.add_header("Accept", "application/json")
     try:
@@ -34,9 +34,12 @@ def osm_get(path, token):
             return json.loads(r.read())
     except urllib.error.HTTPError as e:
         body = e.read()
-        print("HTTP", e.code, path)
+        print("HTTP", e.code, base + path)
         print("Response body:", body[:300])
         raise
+
+def osm_get(path, token):
+    return osm_get_base(OSM_BASE, path, token)
 
 
 def get_token():
@@ -46,7 +49,11 @@ def get_token():
         "client_secret": CLIENT_SECRET,
         "scope":         "section:programme:read",
     }).encode()
-    return osm_post("/oauth/token", body)["access_token"]
+    resp = osm_post("/oauth/token", body)
+    print("Token response keys:", list(resp.keys()))
+    print("Token scope granted:", resp.get("scope", "(none)"))
+    print("Token type:", resp.get("token_type"))
+    return resp["access_token"]
 
 
 def get_sections(token):
@@ -73,14 +80,21 @@ def find_terms(section_data):
 
 
 def get_meetings(token, section_id, term_id):
-    path = (
-        "/ext/programme/meetings/?action=getSummary"
-        "&section_id=" + str(section_id) +
-        "&term_id=" + str(term_id)
-    )
-    result = osm_get(path, token)
-    print("    raw keys:", list(result.keys()) if isinstance(result, dict) else type(result))
-    print("   ", json.dumps(result)[:400])
+    qs = "?action=getSummary&section_id={}&term_id={}".format(section_id, term_id)
+    # try www. and api. hosts
+    for base in [OSM_BASE, "https://api.onlinescoutmanager.co.uk"]:
+        path = "/ext/programme/meetings/" + qs
+        try:
+            result = osm_get_base(base, path, token)
+            print("    OK base={} path={}".format(base, path))
+            print("    raw keys:", list(result.keys()) if isinstance(result, dict) else type(result))
+            print("   ", json.dumps(result)[:400])
+            break
+        except Exception as e:
+            print("    FAILED base={} -> {}".format(base, e))
+            result = None
+    if result is None:
+        return []
     data = result.get("data", {}) if isinstance(result, dict) else {}
     if isinstance(data, list):
         return data
