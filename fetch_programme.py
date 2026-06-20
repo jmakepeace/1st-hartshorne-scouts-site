@@ -1,14 +1,26 @@
 #!/usr/bin/env python3
+"""Fetch the next 3 upcoming OSM programme sessions per section and write program.json.
+
+Requires env vars:
+  OSM_CLIENT_ID
+  OSM_CLIENT_SECRET
+  OSM_REFRESH_TOKEN   — from the authorization_code flow (see argo/get-osm-token.ps1)
+
+Optional:
+  OUTPUT_PATH   — defaults to program.json
+"""
 import os
 import json
 import datetime
 import urllib.request
 import urllib.parse
+import urllib.error
 
-OSM_BASE = "https://www.onlinescoutmanager.co.uk"
-CLIENT_ID = os.environ["OSM_CLIENT_ID"]
+OSM_BASE      = "https://www.onlinescoutmanager.co.uk"
+CLIENT_ID     = os.environ["OSM_CLIENT_ID"]
 CLIENT_SECRET = os.environ["OSM_CLIENT_SECRET"]
-OUTPUT_PATH = os.environ.get("OUTPUT_PATH", "program.json")
+REFRESH_TOKEN = os.environ["OSM_REFRESH_TOKEN"]
+OUTPUT_PATH   = os.environ.get("OUTPUT_PATH", "program.json")
 
 SECTIONS = {
     "beavers": 17499,
@@ -20,13 +32,13 @@ SECTIONS = {
 def osm_post(path, data):
     req = urllib.request.Request(OSM_BASE + path, data=data, method="POST")
     req.add_header("Content-Type", "application/x-www-form-urlencoded")
+    req.add_header("Accept", "application/json")
     with urllib.request.urlopen(req) as r:
         return json.loads(r.read())
 
 
-def osm_get_base(base, path, token):
-    import urllib.error
-    req = urllib.request.Request(base + path)
+def osm_get(path, token):
+    req = urllib.request.Request(OSM_BASE + path)
     req.add_header("Authorization", "Bearer " + token)
     req.add_header("Accept", "application/json")
     try:
@@ -34,25 +46,23 @@ def osm_get_base(base, path, token):
             return json.loads(r.read())
     except urllib.error.HTTPError as e:
         body = e.read()
-        print("HTTP", e.code, base + path)
-        print("Response body:", body[:300])
+        print("HTTP", e.code, OSM_BASE + path)
+        print("Body:", body[:400])
         raise
-
-def osm_get(path, token):
-    return osm_get_base(OSM_BASE, path, token)
 
 
 def get_token():
     body = urllib.parse.urlencode({
-        "grant_type":    "client_credentials",
+        "grant_type":    "refresh_token",
         "client_id":     CLIENT_ID,
         "client_secret": CLIENT_SECRET,
-        "scope":         "section:programme:read",
+        "refresh_token": REFRESH_TOKEN,
     }).encode()
     resp = osm_post("/oauth/token", body)
-    print("Token response keys:", list(resp.keys()))
-    print("Token scope granted:", resp.get("scope", "(none)"))
-    print("Token type:", resp.get("token_type"))
+    print("Scope granted:", resp.get("scope", "(none)"))
+    if "refresh_token" in resp and resp["refresh_token"] != REFRESH_TOKEN:
+        print("WARNING: OSM issued a new refresh_token — update Bitwarden apps-osm-refresh-token")
+        print("New refresh_token:", resp["refresh_token"])
     return resp["access_token"]
 
 
@@ -67,7 +77,7 @@ def find_terms(section_data):
     nxt = None
     for i, term in enumerate(terms):
         start = datetime.date.fromisoformat(term["startdate"])
-        end = datetime.date.fromisoformat(term["enddate"])
+        end   = datetime.date.fromisoformat(term["enddate"])
         if start <= today <= end:
             current = term
             if i + 1 < len(terms):
@@ -80,21 +90,12 @@ def find_terms(section_data):
 
 
 def get_meetings(token, section_id, term_id):
-    qs = "?action=getSummary&section_id={}&term_id={}".format(section_id, term_id)
-    # try www. and api. hosts
-    for base in [OSM_BASE, "https://api.onlinescoutmanager.co.uk"]:
-        path = "/ext/programme/meetings/" + qs
-        try:
-            result = osm_get_base(base, path, token)
-            print("    OK base={} path={}".format(base, path))
-            print("    raw keys:", list(result.keys()) if isinstance(result, dict) else type(result))
-            print("   ", json.dumps(result)[:400])
-            break
-        except Exception as e:
-            print("    FAILED base={} -> {}".format(base, e))
-            result = None
-    if result is None:
-        return []
+    path = (
+        "/ext/programme/meetings/?action=getSummary"
+        "&section_id=" + str(section_id) +
+        "&term_id=" + str(term_id)
+    )
+    result = osm_get(path, token)
     data = result.get("data", {}) if isinstance(result, dict) else {}
     if isinstance(data, list):
         return data
@@ -106,9 +107,8 @@ def get_meetings(token, section_id, term_id):
 
 
 def upcoming(token, section_id, section_data, n=3):
-    today = datetime.date.today()
+    today   = datetime.date.today()
     current, nxt = find_terms(section_data)
-    print(f"    current term: {current}")
     meetings = []
     if current:
         meetings += get_meetings(token, section_id, current["term_id"])
@@ -119,12 +119,12 @@ def upcoming(token, section_id, section_data, n=3):
     future.sort(key=lambda m: m["meetingdate"])
     if len(future) < n and nxt:
         more = get_meetings(token, section_id, nxt["term_id"])
-        more_future = [
+        more_f = [
             m for m in more
             if datetime.date.fromisoformat(m.get("meetingdate", "1970-01-01")) >= today
         ]
-        more_future.sort(key=lambda m: m["meetingdate"])
-        future = (future + more_future)[:n]
+        more_f.sort(key=lambda m: m["meetingdate"])
+        future = (future + more_f)[:n]
     return future[:n]
 
 
@@ -145,7 +145,7 @@ all_sections = get_sections(token)
 by_id = {s["section_id"]: s for s in all_sections}
 
 output = {
-    "updated":  datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
+    "updated":  datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
     "sections": {},
 }
 
