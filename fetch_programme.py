@@ -51,18 +51,24 @@ def osm_get(path, token):
         raise
 
 
+NEW_REFRESH_TOKEN_PATH = "/tmp/new_osm_refresh_token"
+
+
 def get_token():
     body = urllib.parse.urlencode({
         "grant_type":    "refresh_token",
         "client_id":     CLIENT_ID,
         "client_secret": CLIENT_SECRET,
         "refresh_token": REFRESH_TOKEN,
+        "scope":         "section:programme:read",
     }).encode()
     resp = osm_post("/oauth/token", body)
     print("Scope granted:", resp.get("scope", "(none)"))
-    if "refresh_token" in resp and resp["refresh_token"] != REFRESH_TOKEN:
-        print("WARNING: OSM issued a new refresh_token — update Bitwarden apps-osm-refresh-token")
-        print("New refresh_token:", resp["refresh_token"])
+    new_rt = resp.get("refresh_token")
+    if new_rt and new_rt != REFRESH_TOKEN:
+        print("OSM issued a new refresh_token — writing for auto-rotation")
+        with open(NEW_REFRESH_TOKEN_PATH, "w") as f:
+            f.write(new_rt)
     return resp["access_token"]
 
 
@@ -90,19 +96,27 @@ def find_terms(section_data):
 
 
 def get_meetings(token, section_id, term_id):
-    path = (
-        "/ext/programme/meetings/?action=getSummary"
-        "&section_id=" + str(section_id) +
-        "&term_id=" + str(term_id)
-    )
-    result = osm_get(path, token)
-    data = result.get("data", {}) if isinstance(result, dict) else {}
-    if isinstance(data, list):
-        return data
-    if isinstance(data, dict):
-        for key in ("items", "meetings", "programme"):
-            if key in data:
-                return data[key]
+    for sid_key, tid_key in [("section_id", "term_id"), ("sectionid", "termid")]:
+        path = (
+            "/ext/programme/meetings/?action=getSummary"
+            "&" + sid_key + "=" + str(section_id) +
+            "&" + tid_key + "=" + str(term_id)
+        )
+        try:
+            result = osm_get(path, token)
+        except urllib.error.HTTPError as e:
+            if e.code == 404 and sid_key == "section_id":
+                print("  retrying with sectionid/termid params")
+                continue
+            raise
+        data = result.get("data", {}) if isinstance(result, dict) else {}
+        if isinstance(data, list):
+            return data
+        if isinstance(data, dict):
+            for key in ("items", "meetings", "programme"):
+                if key in data:
+                    return data[key]
+        return []
     return []
 
 
