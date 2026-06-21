@@ -461,10 +461,18 @@ p + p { margin-top: 0.75rem; }
 }
 
 .gallery-item img {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+.gallery-item img.active {
+  opacity: 1;
 }
 
 /* ── ADVENTURES ── */
@@ -1000,7 +1008,7 @@ footer a { color: rgba(255,255,255,0.75); }
       </div>
     </div>
     <div class="hero-photo">
-      <img src="beaver-running-jpg.jpg" alt="A young Beaver Scout taking part in a session at our meeting hall" width="2000" height="1333" fetchpriority="high">
+      <img src="cubs-abseiling.jpg" alt="Cubs abseiling down a tall climbing wall at an outdoor activity centre" width="1500" height="2000" fetchpriority="high">
     </div>
   </div>
 </div>
@@ -1064,15 +1072,9 @@ footer a { color: rgba(255,255,255,0.75); }
     <p>Take a look at some of the things we've been up to recently. From community events to high-adrenaline activities, there's never a dull moment.</p>
 
     <div class="gallery-grid">
-      <div class="gallery-item">
-        <img src="beavers-hedge.jpg" alt="Two Beaver Scouts exploring under a hedge during an outdoor session" width="2000" height="1333" loading="lazy">
-      </div>
-      <div class="gallery-item">
-        <img src="cubs-campfire.jpg" alt="Two young people warming their hands by a campfire in the woods" width="2000" height="1500" loading="lazy">
-      </div>
-      <div class="gallery-item">
-        <img src="scouts-pioneering.jpg" alt="A Scout building a pioneering structure with poles and ropes at camp" width="2000" height="1333" loading="lazy">
-      </div>
+      <div class="gallery-item" data-section="beavers"></div>
+      <div class="gallery-item" data-section="cubs"></div>
+      <div class="gallery-item" data-section="scouts"></div>
     </div>
   </div>
 </section>
@@ -1082,7 +1084,7 @@ footer a { color: rgba(255,255,255,0.75); }
   <div class="container">
     <div class="what-we-do">
       <div class="what-we-do-photo">
-        <img src="canoes-jpg.jpg" alt="Young people taking part in a watersports session" width="1024" height="768" loading="lazy">
+        <img src="cubs-water.jpg" alt="Cubs taking part in a watersports activity" width="1448" height="1086" loading="lazy">
       </div>
       <div>
         <p class="section-heading">What we do</p>
@@ -1392,6 +1394,35 @@ footer a { color: rgba(255,255,255,0.75); }
         document.getElementById('programme-grid').innerHTML = '';
       });
   })();
+
+  // Gallery — manifest is generated at Docker build time from beavers/ cubs/ scouts/ folders
+  fetch('gallery-manifest.json')
+    .then(function(r) { return r.json(); })
+    .then(function(manifest) {
+      document.querySelectorAll('.gallery-item[data-section]').forEach(function(item) {
+        var section = item.dataset.section;
+        var files = manifest[section] || [];
+        if (!files.length) return;
+        files.forEach(function(f, i) {
+          var img = document.createElement('img');
+          img.src = section + '/' + f;
+          img.alt = section.charAt(0).toUpperCase() + section.slice(1) + ' — ' + f.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
+          img.loading = 'lazy';
+          if (i === 0) img.classList.add('active');
+          item.appendChild(img);
+        });
+        if (files.length > 1) {
+          var idx = 0;
+          setInterval(function() {
+            var imgs = item.querySelectorAll('img');
+            imgs[idx].classList.remove('active');
+            idx = (idx + 1) % imgs.length;
+            imgs[idx].classList.add('active');
+          }, 5000);
+        }
+      });
+    })
+    .catch(function() {});
 
   const joinForm = document.querySelector("form");
   joinForm.addEventListener("submit", async (e) => {

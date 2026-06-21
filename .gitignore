@@ -1,4 +1,5 @@
 node_modules/
+gallery-manifest.json
 package.json
 package-lock.json
 serve.js
