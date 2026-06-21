@@ -121,27 +121,14 @@ def find_terms(section_data):
 
 
 def get_meetings(token, section_id, term_id):
-    for sid_key, tid_key in [("section_id", "term_id"), ("sectionid", "termid")]:
-        path = (
-            "/ext/programme/meetings/?action=getSummary"
-            "&" + sid_key + "=" + str(section_id) +
-            "&" + tid_key + "=" + str(term_id)
-        )
-        try:
-            result = osm_get(path, token)
-        except urllib.error.HTTPError as e:
-            if e.code == 404 and sid_key == "section_id":
-                print("  retrying with sectionid/termid params")
-                continue
-            raise
-        data = result.get("data", {}) if isinstance(result, dict) else {}
-        if isinstance(data, list):
-            return data
-        if isinstance(data, dict):
-            for key in ("items", "meetings", "programme"):
-                if key in data:
-                    return data[key]
-        return []
+    path = (
+        "/ext/programme/?action=getProgrammeSummary"
+        "&sectionid=" + str(section_id) +
+        "&termid=" + str(term_id)
+    )
+    result = osm_get(path, token)
+    if isinstance(result, dict):
+        return result.get("items", [])
     return []
 
 
