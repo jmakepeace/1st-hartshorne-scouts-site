@@ -16,19 +16,7 @@ jobs:
       - uses: actions/checkout@v7.0.0
 
       - name: Fetch OSM programme
-        env:
-          OSM_REFRESH_TOKEN: ${{ secrets.OSM_REFRESH_TOKEN }}
         run: python3 fetch_programme.py
-
-      - name: Rotate refresh token if OSM issued a new one
-        env:
-          GH_TOKEN: ${{ env.GH_PAT }}
-        run: |
-          if [ -f /tmp/new_osm_refresh_token ]; then
-            NEW_TOKEN=$(cat /tmp/new_osm_refresh_token)
-            echo "$NEW_TOKEN" | gh secret set OSM_REFRESH_TOKEN --repo jmakepeace/1st-hartshorne-scouts-site
-            echo "Refresh token rotated in GitHub secrets"
-          fi
 
       - name: Commit if changed
         run: |

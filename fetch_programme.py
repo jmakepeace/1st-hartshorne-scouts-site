@@ -11,6 +11,8 @@ Optional:
 """
 import os
 import json
+import base64
+import ssl
 import datetime
 import urllib.request
 import urllib.parse
@@ -51,7 +53,31 @@ def osm_get(path, token):
         raise
 
 
-NEW_REFRESH_TOKEN_PATH = "/tmp/new_osm_refresh_token"
+def patch_k8s_refresh_token(new_token):
+    sa = "/var/run/secrets/kubernetes.io/serviceaccount"
+    if not os.path.exists(sa):
+        print("WARNING: not in-cluster, cannot auto-rotate K8s secret")
+        return
+    with open(sa + "/token") as f:
+        bearer = f.read().strip()
+    with open(sa + "/namespace") as f:
+        ns = f.read().strip()
+    url = (
+        "https://kubernetes.default.svc/api/v1/namespaces/"
+        + ns + "/secrets/scouts-site-osm-refresh-token"
+    )
+    patch = json.dumps({
+        "data": {"refresh_token": base64.b64encode(new_token.encode()).decode()}
+    }).encode()
+    ctx = ssl.create_default_context(cafile=sa + "/ca.crt")
+    req = urllib.request.Request(url, data=patch, method="PATCH")
+    req.add_header("Authorization", "Bearer " + bearer)
+    req.add_header("Content-Type", "application/strategic-merge-patch+json")
+    try:
+        with urllib.request.urlopen(req, context=ctx) as r:
+            print("K8s secret patched (HTTP", r.status, ")")
+    except Exception as e:
+        print("WARNING: could not patch K8s secret:", e)
 
 
 def get_token():
@@ -66,9 +92,8 @@ def get_token():
     print("Scope granted:", resp.get("scope", "(none)"))
     new_rt = resp.get("refresh_token")
     if new_rt and new_rt != REFRESH_TOKEN:
-        print("OSM issued a new refresh_token — writing for auto-rotation")
-        with open(NEW_REFRESH_TOKEN_PATH, "w") as f:
-            f.write(new_rt)
+        print("OSM issued a new refresh_token — patching K8s secret")
+        patch_k8s_refresh_token(new_rt)
     return resp["access_token"]
 
 
