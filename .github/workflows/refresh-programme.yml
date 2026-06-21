@@ -27,5 +27,12 @@ jobs:
           else
             git add program.json
             git commit -m "chore: refresh OSM programme data"
-            git push
+            # Push with the PAT (not the default GITHUB_TOKEN) so the commit
+            # triggers the build-push workflow. GITHUB_TOKEN pushes do not.
+            if [ -n "${GH_PAT:-}" ]; then
+              git push "https://x-access-token:${GH_PAT}@github.com/jmakepeace/1st-hartshorne-scouts-site.git" HEAD:main
+            else
+              echo "GH_PAT not set — pushing with default token (will NOT trigger build)"
+              git push
+            fi
           fi
