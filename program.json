@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-23T11:30:24Z",
+  "updated": "2026-06-24T06:51:09Z",
   "sections": {
     "beavers": [
       {
@@ -37,11 +37,6 @@
     ],
     "scouts": [
       {
-        "date": "2026-06-23",
-        "title": "Visit to Derby Cathedral",
-        "notes": ""
-      },
-      {
         "date": "2026-06-30",
         "title": "Outdoor First Aid",
         "notes": ""
@@ -49,6 +44,11 @@
       {
         "date": "2026-07-07",
         "title": "Survival Skills",
+        "notes": ""
+      },
+      {
+        "date": "2026-07-14",
+        "title": "Hike and Pack forum",
         "notes": ""
       }
     ]
