@@ -1,12 +1,7 @@
 {
-  "updated": "2026-06-29T08:15:37Z",
+  "updated": "2026-06-30T06:57:57Z",
   "sections": {
     "beavers": [
-      {
-        "date": "2026-06-29",
-        "title": "Collectors badge",
-        "notes": ""
-      },
       {
         "date": "2026-07-06",
         "title": "Sports day",
@@ -15,6 +10,11 @@
       {
         "date": "2026-07-13",
         "title": "Police visit/last session before summer",
+        "notes": ""
+      },
+      {
+        "date": "2026-09-07",
+        "title": "Unnamed meeting",
         "notes": ""
       }
     ],
