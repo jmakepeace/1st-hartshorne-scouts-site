@@ -5,6 +5,7 @@
 // tunnel) so they live under the apex domain:
 //   1sthartshornescouts.org/medication        -> medication.1sthartshornescouts.org
 //   1sthartshornescouts.org/risk-assessments  -> ram.1sthartshornescouts.org
+//   1sthartshornescouts.org/analytics         -> analytics.1sthartshornescouts.org
 //
 // The proxied apps are built with a matching Next.js basePath, so every link,
 // asset and API URL they emit is already prefixed — we forward the path as-is.
@@ -12,10 +13,15 @@
 // too; `redirect: 'manual'` makes those 3xx pass through to the browser instead
 // of being followed inside the Worker (which would break the SSO round-trip).
 // Session cookies are host-only, so the browser binds them to the apex it sees.
+//
+// The analytics backend (Umami) is never dialed directly by browsers — the
+// hostname above is an internal origin behind the tunnel only, reached
+// server-side by this Worker, so visitors only ever see the apex domain.
 
 const ROUTES = [
   { prefix: '/medication', host: 'medication.1sthartshornescouts.org' },
   { prefix: '/risk-assessments', host: 'ram.1sthartshornescouts.org' },
+  { prefix: '/analytics', host: 'analytics.1sthartshornescouts.org' },
 ]
 
 function matchRoute(pathname) {
