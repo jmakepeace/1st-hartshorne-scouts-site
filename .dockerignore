@@ -1,10 +1,7 @@
 node_modules
-.wrangler
 .git
 .claude
 serve.js
-worker.js
-wrangler.jsonc
 package.json
 package-lock.json
 README.md
