@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-03T09:31:12Z",
+  "updated": "2026-07-04T06:22:44Z",
   "sections": {
     "beavers": [
       {
@@ -20,18 +20,18 @@
     ],
     "cubs": [
       {
-        "date": "2026-07-03",
-        "title": "Talent show",
-        "notes": ""
-      },
-      {
         "date": "2026-07-10",
         "title": "NO SESSION",
         "notes": ""
       },
       {
         "date": "2026-07-17",
-        "title": "Pick triangle hike",
+        "title": "Foxley Woods Hike",
+        "notes": ""
+      },
+      {
+        "date": "2026-09-11",
+        "title": "Welcome back and pack forum",
         "notes": ""
       }
     ],
