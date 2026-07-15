@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-14T05:33:30Z",
+  "updated": "2026-07-15T05:34:16Z",
   "sections": {
     "beavers": [
       {
@@ -37,11 +37,6 @@
     ],
     "scouts": [
       {
-        "date": "2026-07-14",
-        "title": "Hike and Pack forum",
-        "notes": ""
-      },
-      {
         "date": "2026-09-15",
         "title": "Welcome back and pack forum",
         "notes": ""
@@ -49,6 +44,11 @@
       {
         "date": "2026-09-22",
         "title": "Hike",
+        "notes": ""
+      },
+      {
+        "date": "2026-09-29",
+        "title": "Geocaching",
         "notes": ""
       }
     ]
