@@ -22,9 +22,8 @@
 <link rel="canonical" href="https://1sthartshornescouts.org/">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="preload" as="image" href="cubs-abseiling.jpg" fetchpriority="high">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800;6..12,900&display=swap" rel="stylesheet">
+<link rel="preload" as="font" type="font/woff2" href="fonts/nunito-sans-latin.woff2" crossorigin>
+<link href="fonts/nunito-sans.css" rel="stylesheet">
 <script defer src="https://1sthartshornescouts.org/analytics/script.js" data-website-id="cf0f05b2-d55a-476a-bd83-65b7926fd7ef"></script>
 <script type="application/ld+json">
 {
@@ -752,6 +751,8 @@ textarea { resize: vertical; min-height: 100px; }
   margin-top: -0.3rem;
 }
 
+.form-note a { color: var(--purple); font-weight: 800; }
+
 .form-guidance {
   background: white;
   border: 1.5px solid var(--border);
@@ -785,6 +786,20 @@ textarea { resize: vertical; min-height: 100px; }
   height: 100%;
   border: none;
 }
+
+.map-placeholder {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.map-placeholder p { font-size: 14px; max-width: 480px; }
+.map-placeholder a { color: var(--purple); font-weight: 800; }
 
 .contact-tiles {
   display: grid;
@@ -1257,7 +1272,7 @@ footer a { color: rgba(255,255,255,0.75); }
           <label for="message">Anything else you'd like us to know?</label>
           <textarea id="message" name="message" placeholder="Any questions or additional information about your child..."></textarea>
         </div>
-        <p class="form-note">By submitting this form you agree to us using the details you've provided to contact you about joining 1st Hartshorne Scout Group. We won't share your information with anyone else and we'll only keep it for as long as we need to respond to your enquiry. If we go on to register your child, we'll let you know separately about the Scout Association's own privacy notice.</p>
+        <p class="form-note">By submitting this form you agree to us using the details you've provided to contact you about joining 1st Hartshorne Scout Group. We won't share your information with anyone else and we'll only keep it for as long as we need to respond to your enquiry. The form is delivered to us by Formspree — see our <a href="privacy.html">privacy notice</a> for full details of how we handle your information and your rights. If we go on to register your child, we'll let you know separately about the Scout Association's own privacy notice.</p>
         <button type="submit" class="btn btn-purple btn-full">Send enquiry &rarr;</button>
       </form>
       </div>
@@ -1298,8 +1313,12 @@ footer a { color: rgba(255,255,255,0.75); }
     <h2>Get in touch</h2>
     <p>You can also reach us directly using the details below.</p>
 
-    <div class="map-container">
-      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2413.565985011684!2d-1.5163832!3d52.7830913!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4879fecbffa5559f%3A0x82e89b559b394bdb!2s1st%20Hartshorne%20Scout%20Group!5e0!3m2!1sen!2suk!4v1751500000000!5m2!1sen!2suk" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <div class="map-container" id="map-container">
+      <div class="map-placeholder">
+        <p><strong>Map of St Peter's Church Hall, Manchester Lane, Hartshorne DE11 7BE</strong></p>
+        <p>The interactive map is provided by Google Maps. Loading it shares your IP address with Google — see our <a href="privacy.html">privacy notice</a>.</p>
+        <button type="button" class="btn btn-purple" id="load-map">Load map</button>
+      </div>
     </div>
 
     <div class="contact-tiles">
@@ -1339,6 +1358,7 @@ footer a { color: rgba(255,255,255,0.75); }
       <a href="https://www.onlinescoutmanager.co.uk/login.php" target="_blank" rel="noopener">Online Scout Manager</a>
       <a href="https://www.scouts.org.uk/volunteers/staying-safe-and-safeguarding/" target="_blank" rel="noopener">Safeguarding</a>
       <a href="https://www.scouts.org.uk" target="_blank" rel="noopener">The Scout Association</a>
+      <a href="privacy.html">Privacy notice</a>
     </div>
     <p class="footer-name">1st Hartshorne Scout Group</p>
     <p class="footer-note">Part of South Derbyshire District · #SkillsForLife</p>
@@ -1360,6 +1380,18 @@ footer a { color: rgba(255,255,255,0.75); }
   });
   primaryNav.querySelectorAll("a").forEach(a => {
     a.addEventListener("click", () => setNav(false));
+  });
+
+  // Map loads only on request so no data is sent to Google without consent
+  document.getElementById("load-map").addEventListener("click", () => {
+    const iframe = document.createElement("iframe");
+    iframe.src = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2413.565985011684!2d-1.5163832!3d52.7830913!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4879fecbffa5559f%3A0x82e89b559b394bdb!2s1st%20Hartshorne%20Scout%20Group!5e0!3m2!1sen!2suk!4v1751500000000!5m2!1sen!2suk";
+    iframe.allowFullscreen = true;
+    iframe.referrerPolicy = "no-referrer-when-downgrade";
+    iframe.title = "Map showing St Peter's Church Hall, Hartshorne";
+    const container = document.getElementById("map-container");
+    container.textContent = "";
+    container.appendChild(iframe);
   });
 
   // Programme
