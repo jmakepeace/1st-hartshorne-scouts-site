@@ -13,12 +13,15 @@ import os
 import json
 import base64
 import ssl
+import time
 import datetime
 import urllib.request
 import urllib.parse
 import urllib.error
 
 OSM_BASE      = "https://www.onlinescoutmanager.co.uk"
+HTTP_TIMEOUT  = 30   # seconds per request
+HTTP_RETRIES  = 4    # retries after the first attempt, backoff 2/4/8/16s
 CLIENT_ID     = os.environ["OSM_CLIENT_ID"]
 CLIENT_SECRET = os.environ["OSM_CLIENT_SECRET"]
 REFRESH_TOKEN = os.environ["OSM_REFRESH_TOKEN"]
@@ -31,11 +34,31 @@ SECTIONS = {
 }
 
 
+def urlopen_with_retry(req):
+    for attempt in range(HTTP_RETRIES + 1):
+        try:
+            return urllib.request.urlopen(req, timeout=HTTP_TIMEOUT)
+        except urllib.error.HTTPError as e:
+            # Server errors and rate limits are worth retrying; anything
+            # else (auth, bad request) is permanent.
+            if e.code < 500 and e.code != 429:
+                raise
+            err = e
+        except (urllib.error.URLError, TimeoutError, OSError) as e:
+            err = e
+        if attempt == HTTP_RETRIES:
+            raise err
+        delay = 2 ** (attempt + 1)
+        print(f"Request to {req.full_url} failed ({err}), "
+              f"retry {attempt + 1}/{HTTP_RETRIES} in {delay}s")
+        time.sleep(delay)
+
+
 def osm_post(path, data):
     req = urllib.request.Request(OSM_BASE + path, data=data, method="POST")
     req.add_header("Content-Type", "application/x-www-form-urlencoded")
     req.add_header("Accept", "application/json")
-    with urllib.request.urlopen(req) as r:
+    with urlopen_with_retry(req) as r:
         return json.loads(r.read())
 
 
@@ -44,7 +67,7 @@ def osm_get(path, token):
     req.add_header("Authorization", "Bearer " + token)
     req.add_header("Accept", "application/json")
     try:
-        with urllib.request.urlopen(req) as r:
+        with urlopen_with_retry(req) as r:
             return json.loads(r.read())
     except urllib.error.HTTPError as e:
         body = e.read()
