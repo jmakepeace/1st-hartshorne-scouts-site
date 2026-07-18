@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-17T05:44:09Z",
+  "updated": "2026-07-18T05:29:01Z",
   "sections": {
     "beavers": [
       {
@@ -20,11 +20,6 @@
     ],
     "cubs": [
       {
-        "date": "2026-07-17",
-        "title": "Foxley Woods Hike",
-        "notes": ""
-      },
-      {
         "date": "2026-09-11",
         "title": "Welcome back and pack forum",
         "notes": ""
@@ -32,6 +27,11 @@
       {
         "date": "2026-09-18",
         "title": "Team leader",
+        "notes": ""
+      },
+      {
+        "date": "2026-09-25",
+        "title": "Unnamed meeting",
         "notes": ""
       }
     ],
